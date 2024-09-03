@@ -199,80 +199,102 @@ foreach ($wakadir as $wadir)
 		<tr bgcolor="<?= $warna; ?>">
 			<td align="center"><?= $no++; ?></td>
 			<td><?= $ds['nama_siswa']; ?></td>
-			<td align="center"><?=$ds['jk'] ?></td>
+			<td align="center"><?= $ds['jk'] ?></td>
 			<?php
+			// Query data sekali di luar loop
+			$keterangan = [];
+			$ketResult = mysqli_query($con, "SELECT _logabsensi.pertemuan_ke, _logabsensi.ket, COUNT(*) AS jumlah_absensi
+        FROM _logabsensi
+        INNER JOIN tb_mengajar ON _logabsensi.id_mengajar = tb_mengajar.id_mengajar
+        INNER JOIN tb_semester ON tb_mengajar.id_semester = tb_semester.id_semester
+        INNER JOIN tb_thajaran ON tb_mengajar.id_thajaran = tb_thajaran.id_thajaran
+        WHERE _logabsensi.id_siswa = '$ds[id_siswa]'
+        AND _logabsensi.id_mengajar = '$_GET[pelajaran]'
+        AND tb_mengajar.id_prodi = '$_GET[kelas]'
+        AND tb_thajaran.status = 1
+        AND tb_semester.status = 1
+        GROUP BY _logabsensi.pertemuan_ke, _logabsensi.ket
+        ORDER BY _logabsensi.pertemuan_ke");
+
+			while ($row = mysqli_fetch_assoc($ketResult)) {
+				$keterangan[$row['pertemuan_ke']] = $row['ket'];
+			}
+
+			// Loop `for` untuk menampilkan data
 			for ($i = 1; $i <= $tglTerakhir; $i++) {
 			?>
-				<td align="center" bgcolor="white">
+				<td align="center" bgcolor="<?= $warna; ?>">
 					<?php
-					$ket = mysqli_query($con, "SELECT COUNT(*) FROM _logabsensi
-			INNER JOIN tb_mengajar ON _logabsensi.id_mengajar=tb_mengajar.id_mengajar
-			INNER JOIN tb_semester ON tb_mengajar.id_semester=tb_semester.id_semester
-			INNER JOIN tb_thajaran ON tb_mengajar.id_thajaran=tb_thajaran.id_thajaran
-			WHERE _logabsensi.pertemuan_ke='$i' AND _logabsensi.id_siswa='$ds[id_siswa]' AND _logabsensi.id_mengajar='$_GET[pelajaran]' AND tb_mengajar.id_prodi='$_GET[kelas]'  AND tb_thajaran.status=1 AND tb_semester.status=1 GROUP BY pertemuan_ke ");
-					foreach ($ket as $h)
-
-						// echo $h['ket'];
-						if ($h['ket'] == 'H') {
+					if (isset($keterangan[$i])) {
+						// Ambil data `ket` sesuai dengan pertemuan ke-n
+						$ket = $keterangan[$i];
+						if ($ket == 'H') {
 							echo "<b style='color:#2196F3;'>H</b>";
-						} elseif ($h['ket'] == 'I') {
+						} elseif ($ket == 'I') {
 							echo "<b style='color:#4CAF50;'>I</b>";
-						} elseif ($h['ket'] == 'S') {
+						} elseif ($ket == 'S') {
 							echo "<b style='color:#FFC107;'>S</b>";
-						} elseif ($h['ket'] == 'A') {
+						} elseif ($ket == 'A') {
 							echo "<b style='color:#D50000;'>A</b>";
-						} elseif ($h['ket'] == 'T') {
+						} elseif ($ket == 'T') {
 							echo "<b style='color:#76FF03;'>T</b>";
 						} else {
 							echo "<b style='color:#9C27B0;'>C</b>";
 						}
-
-
-
+					} else {
+						// Jika tidak ada data untuk pertemuan ke-n, tampilkan "-"
+						echo "-";
+					}
 					?>
 				</td>
-
 			<?php
-
-
 			}
-
 			?>
+
+
 
 			<td align="center" style="font-weight: bold;">
 				<?php
-				$sakit = mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(ket) AS hadir FROM _logabsensi WHERE id_siswa='$ds[id_siswa]' and ket='H'  and id_mengajar='$_GET[pelajaran]' "));
+				$sakit = mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) AS hadir
+FROM _logabsensi
+WHERE id_siswa = '$ds[id_siswa]'
+AND ket = 'H'
+ AND id_mengajar = '$_GET[pelajaran]'"));
 				echo $sakit['hadir'];
 
 				?>
 			</td>
 			<td align="center" style="font-weight: bold;">
 				<?php
-				$sakit = mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(ket) AS sakit FROM _logabsensi WHERE id_siswa='$ds[id_siswa]' and ket='S'  and id_mengajar='$_GET[pelajaran]' "));
+				$sakit = mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) AS sakit
+FROM _logabsensi
+WHERE id_siswa = '$ds[id_siswa]'
+AND ket = 'S'
+AND id_mengajar = '$_GET[pelajaran]'"));
 				echo $sakit['sakit'];
 
 				?>
 			</td>
 			<td align="center" style="font-weight: bold;">
 				<?php
-				$izin = mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(ket) AS izin FROM _logabsensi
-	INNER JOIN tb_mengajar ON _logabsensi.id_mengajar=tb_mengajar.id_mengajar
-		INNER JOIN tb_semester ON tb_mengajar.id_semester=tb_semester.id_semester
-		INNER JOIN tb_thajaran ON tb_mengajar.id_thajaran=tb_thajaran.id_thajaran
- WHERE _logabsensi.id_siswa='$ds[id_siswa]' and _logabsensi.ket='I' and _logabsensi.id_mengajar='$_GET[pelajaran]' AND tb_mengajar.id_mkelas='$_GET[kelas]'  AND tb_thajaran.status=1 AND tb_semester.status=1 "));
-				echo $izin['izin'];
+				$sakit = mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) AS sakit
+FROM _logabsensi
+WHERE id_siswa = '$ds[id_siswa]'
+AND ket = 'I'
+AND id_mengajar = '$_GET[pelajaran]'"));
+				echo $sakit['sakit'];
 
 				?>
-			</td align="center" style="font-weight: bold;">
+			</td>
 
 			<td align="center" style="font-weight: bold;">
 				<?php
-				$alfa = mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(ket) AS alfa FROM _logabsensi
-	INNER JOIN tb_mengajar ON _logabsensi.id_mengajar=tb_mengajar.id_mengajar
-		INNER JOIN tb_semester ON tb_mengajar.id_semester=tb_semester.id_semester
-		INNER JOIN tb_thajaran ON tb_mengajar.id_thajaran=tb_thajaran.id_thajaran
- WHERE _logabsensi.id_siswa='$ds[id_siswa]' and _logabsensi.ket='A' and _logabsensi.id_mengajar='$_GET[pelajaran]' AND tb_mengajar.id_mkelas='$_GET[kelas]'  AND tb_thajaran.status=1 AND tb_semester.status=1 "));
-				echo $alfa['alfa'];
+				$sakit = mysqli_fetch_array(mysqli_query($con, "SELECT COUNT(*) AS sakit
+FROM _logabsensi
+WHERE id_siswa = '$ds[id_siswa]'
+AND ket = 'A'
+AND id_mengajar = '$_GET[pelajaran]'"));
+				echo $sakit['sakit'];
 
 				?>
 			</td>
