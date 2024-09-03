@@ -74,7 +74,7 @@ foreach ($kelasMengajar as $d)
 
 			<?php
 			// tampilkan data absen setiap bulan, berdasarkan tahun ajaran yg aktif
-			$qry = mysqli_query($con, "SELECT * FROM _logabsensi
+			$qry = mysqli_query($con, "SELECT COUNT(*) FROM _logabsensi
 									INNER JOIN tb_mengajar ON _logabsensi.id_mengajar=tb_mengajar.id_mengajar
 									INNER JOIN tb_thajaran ON tb_mengajar.id_thajaran=tb_thajaran.id_thajaran
 									INNER JOIN tb_semester ON tb_mengajar.id_semester=tb_semester.id_semester
