@@ -54,7 +54,7 @@ foreach ($kelasMengajar as $d)
 
     // tampilkan data absen
 
-    $qry = mysqli_query($con, "SELECT * FROM _logabsensi 
+    $qry = mysqli_query($con, "SELECT COUNT(*) FROM _logabsensi 
 INNER JOIN tb_siswa ON _logabsensi.id_siswa=tb_siswa.id_siswa
 INNER JOIN tb_mengajar ON _logabsensi.id_mengajar=tb_mengajar.id_mengajar
 INNER JOIN tb_mkelas ON tb_mengajar.id_mkelas=tb_mkelas.id_mkelas
@@ -197,7 +197,7 @@ foreach ($walikelas as $walas)
             ?>
                 <td align="center" bgcolor="white">
                     <?php
-                    $ket = mysqli_query($con, "SELECT * FROM _logabsensi
+                    $ket = mysqli_query($con, "SELECT COUNT(*) FROM _logabsensi
 			INNER JOIN tb_mengajar ON _logabsensi.id_mengajar=tb_mengajar.id_mengajar
 			INNER JOIN tb_semester ON tb_mengajar.id_semester=tb_semester.id_semester
 			INNER JOIN tb_thajaran ON tb_mengajar.id_thajaran=tb_thajaran.id_thajaran
@@ -299,7 +299,7 @@ foreach ($walikelas as $walas)
             <td align="center">
                 <em style="font: 11px;">
                     <?php
-                    $ket = mysqli_query($con, "SELECT * FROM _logabsensi
+                    $ket = mysqli_query($con, "SELECT COUNT(*) FROM _logabsensi
 	INNER JOIN tb_mengajar ON _logabsensi.id_mengajar=tb_mengajar.id_mengajar
 	INNER JOIN tb_semester ON tb_mengajar.id_semester=tb_semester.id_semester
 	INNER JOIN tb_thajaran ON tb_mengajar.id_thajaran=tb_thajaran.id_thajaran
