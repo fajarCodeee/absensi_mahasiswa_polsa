@@ -57,7 +57,7 @@ foreach ($kelasMengajar as $d)
 
             <?php 
 								// dapatkan pertemuan terakhir di tb izin
-								$last_pertemuan = mysqli_query($con,"SELECT * FROM _logabsensi WHERE id_mengajar='$_GET[pelajaran]' GROUP BY pertemuan_ke ORDER BY pertemuan_ke DESC LIMIT 1  ");
+								$last_pertemuan = mysqli_query($con,"SELECT COUNT(*) FROM _logabsensi WHERE id_mengajar='$_GET[pelajaran]' GROUP BY pertemuan_ke ORDER BY pertemuan_ke DESC LIMIT 1  ");
 								$cekPertemuan = mysqli_num_rows($last_pertemuan);
 								$jml = mysqli_fetch_array($last_pertemuan);
 
@@ -141,10 +141,6 @@ foreach ($kelasMengajar as $d)
                                                 value="C" <?php if ($s['ket']=='C') { echo"checked";}?>>
                                             <span class="form-check-sign">C</span>
                                         </label>
-
-
-
-
                                     </div>
                                 </td>
                             </tr>
@@ -163,7 +159,6 @@ foreach ($kelasMengajar as $d)
 
                     <a href="javascript:history.back()" class="btn btn-default"><i class="fas fa-arrow-circle-left"></i>
                         Kembali</a>
-
                 </center>
             </div>
             </form>
@@ -173,12 +168,10 @@ foreach ($kelasMengajar as $d)
 										
 										$total = $jumlahSiswa-1;
 										
-
 										for ($i =0; $i <=$total ; $i++) {
 
 											$pertemuan = $_POST['pertemuan'];
-										$hari_sekarang= date('Y-m-d');
-
+										    $hari_sekarang= date('Y-m-d');
 											$id_siswa = $_POST['id_siswa-'.$i];
 											$pelajaran = $_POST['pelajaran'];
 											$ket = $_POST['ket-'.$i];
