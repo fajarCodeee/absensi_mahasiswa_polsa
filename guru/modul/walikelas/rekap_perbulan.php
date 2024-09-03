@@ -111,7 +111,7 @@ foreach ($walikelas as $walas)
 
                 </div>
                 <div class="card-body">
-                    <a target="_blank" href="../guru/modul/walikelas/rekap_persemester.php?pelajaran=<?= $_GET[pelajaran] ?>&bulan=<?= $bulan; ?>&prodi=<?= $_GET[prodi] ?>" class="btn btn-default">
+                    <a target="_blank" href="../guru/modul/walikelas/rekap_persemester.php?pelajaran=<?= $_GET["pelajaran"] ?>&bulan=<?= $bulan; ?>&prodi=<?= $_GET["prodi"] ?>" class="btn btn-default">
                         <span class="btn-label">
                             <i class="fas fa-print"></i>
                         </span>
@@ -119,7 +119,7 @@ foreach ($walikelas as $walas)
                     </a>
                     <?php
                     // tampilkan data absen setiap bulan, berdasarkan tahun ajaran yg aktif
-                    $qry = mysqli_query($con, "SELECT * FROM _logabsensi
+                    $qry = mysqli_query($con, "SELECT COUNT(*) FROM _logabsensi
 		INNER JOIN tb_mengajar ON _logabsensi.id_mengajar=tb_mengajar.id_mengajar
 		INNER JOIN tb_thajaran ON tb_mengajar.id_thajaran=tb_thajaran.id_thajaran
 		INNER JOIN tb_semester ON tb_mengajar.id_semester=tb_semester.id_semester
@@ -149,7 +149,7 @@ foreach ($walikelas as $walas)
 
                             <p>
 
-                                <!-- 	<a target="_blank" href="../guru/modul/rekap/rekap_bulan.php?pelajaran=<?= $_GET[pelajaran] ?>&bulan=<?= $bulan; ?>&kelas=<?= $_GET[kelas] ?>" class="btn btn-default">
+                                <!-- 	<a target="_blank" href="../guru/modul/rekap/rekap_bulan.php?pelajaran=<?= $_GET["pelajaran"] ?>&bulan=<?= $bulan; ?>&kelas=<?= $_GET["kelas"] ?>" class="btn btn-default">
 						<span class="btn-label">
 							<i class="fas fa-print"></i>
 						</span>
@@ -185,7 +185,7 @@ foreach ($walikelas as $walas)
                                 // tampilkan absen siswa
                                 $no = 1;
 
-                                $qryAbsen = mysqli_query($con, "SELECT * FROM _logabsensi INNER JOIN tb_siswa ON _logabsensi.id_siswa=tb_siswa.id_siswa
+                                $qryAbsen = mysqli_query($con, "SELECT COUNT(*) FROM _logabsensi INNER JOIN tb_siswa ON _logabsensi.id_siswa=tb_siswa.id_siswa
 						WHERE MONTH(tgl_absen)='$bulan' AND _logabsensi.id_mengajar='$_GET[pelajaran]'
 						GROUP BY _logabsensi.id_siswa  ORDER BY _logabsensi.id_siswa ASC ");
                                 foreach ($qryAbsen as $d) {
