@@ -3,16 +3,15 @@
 $kelas = $_GET['siswa'];
 
 
-$kelasMengajar = mysqli_query($con, "
-    SELECT tb_siswa.id_siswa, tb_siswa.id_mkelas, tb_siswa.id_semester, tb_mkelas.nama_kelas, tb_semester.semester
-    FROM tb_siswa
-    JOIN tb_mkelas ON tb_siswa.id_mkelas = tb_mkelas.id_mkelas
-    JOIN tb_semester ON tb_siswa.id_semester = tb_semester.id_semester
-    JOIN tb_prodi ON tb_siswa.id_prodi = tb_prodi.id_prodi
-    WHERE tb_prodi.id_prodi = '$kelas'
-    GROUP BY tb_siswa.id_mkelas, tb_siswa.id_semester
+$kelasMengajar = mysqli_query($con, "SELECT tb_siswa.id_siswa, tb_siswa.id_mkelas, tb_siswa.id_semester, tb_mkelas.nama_kelas, tb_semester.semester
+FROM tb_siswa
+JOIN tb_mkelas ON tb_siswa.id_mkelas = tb_mkelas.id_mkelas
+JOIN tb_semester ON tb_siswa.id_semester = tb_semester.id_semester
+JOIN tb_prodi ON tb_siswa.id_prodi = tb_prodi.id_prodi
+WHERE tb_prodi.id_prodi = $kelas
+GROUP BY tb_siswa.id_siswa, tb_siswa.id_mkelas, tb_siswa.id_semester, tb_mkelas.nama_kelas, tb_semester.semester;
 ");
-$d = mysqli_fetch_assoc($kelasMengajar);
+// $d = mysqli_fetch_assoc($kelasMengajar);
 $d = mysqli_fetch_assoc($kelasMengajar);
 
 // $kelasMengajar = mysqli_query($con,"SELECT * FROM tb_mengajar 
@@ -75,7 +74,7 @@ $d = mysqli_fetch_assoc($kelasMengajar);
                                     <td><?= $mp['nama_kelas']; ?></td>
                                     <td><?= $mp['semester']; ?></td>
                                     <td>
-                                        <a href="?page=siswa&act=data&siswa=<?= $mp[id_siswa] ?>" class="btn btn-default">
+                                        <a href="?page=siswa&act=data&siswa=<?= $mp['id_siswa'] ?>" class="btn btn-default">
                                             <span class="btn-label">
                                                 <i class="fas fa-clipboard"></i>
                                             </span>
