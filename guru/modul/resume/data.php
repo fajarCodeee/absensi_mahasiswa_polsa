@@ -55,7 +55,7 @@ foreach ($kelasMengajar as $d)
 
         <?php
         // dapatkan pertemuan terakhir di tb izin
-        $last_pertemuan = mysqli_query($con, "SELECT * FROM tb_resume WHERE id_mengajar='$_GET[pelajaran]' GROUP BY pertemuan_ke ORDER BY pertemuan_ke DESC LIMIT 1  ");
+        $last_pertemuan = mysqli_query($con, "SELECT COUNT(*) FROM tb_resume WHERE id_mengajar='$_GET[pelajaran]' GROUP BY pertemuan_ke ORDER BY pertemuan_ke DESC LIMIT 1");
         $cekPertemuan = mysqli_num_rows($last_pertemuan);
         $jml = mysqli_fetch_array($last_pertemuan);
 

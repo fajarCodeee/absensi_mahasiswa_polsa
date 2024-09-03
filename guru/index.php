@@ -525,7 +525,7 @@ WHERE tb_mengajar.id_guru='$data[id_guru]' AND tb_thajaran.status=1 ");
 
 			// Set maksimal tanggal ke besok harinya
 			minDate.setDate(today.getDate() - 1);
-			maxDate.setDate(today.getDate() S);
+			maxDate.setDate(today.getDate());
 
 			// Format tanggal menjadi string yang sesuai dengan input type date
 			const formatDateString = (date) => {
